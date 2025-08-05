@@ -31,7 +31,7 @@ main:
 	
 	move $a3, $v0 # n v0 -> a3
 	
-	mflo $a0 # a0 = n * 
+	mflo $a0 # a0 = n * n
 	li $v0, 9 # alloc n * n
 	syscall
 	
