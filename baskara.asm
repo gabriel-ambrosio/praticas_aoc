@@ -63,9 +63,9 @@ main:
 	sqrt.s $f21, $f20	# Guarda raiz quadrada de delta em f21
 	
 	l.s $f22, fator
-	mul.s $f23, $f22, $f12	# Multiplica o ac em 10 vezes
+	mul.s $f23, $f22, $f12	# Multiplica o ac em 10 vezes (valor escolhido como muito maior)
 	
-	c.lt.s $f23, $f10
+	c.lt.s $f23, $f10	# Compara: ( 10 * ac < b^2 ?)
 	bc1t cancelamento	
 	
 	neg.s $f4, $f2		# Guarda (-b) em f4	
