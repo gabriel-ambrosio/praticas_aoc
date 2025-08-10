@@ -6,7 +6,7 @@ matriz_print: .asciiz "\nSaida: Matriz espiral:\n"
 # entrada da string
 string:     .space 100     
 # espaco para matriz 
-matriz:     .space 121   
+matriz:     .space 144
 
 .text
 .globl main
@@ -26,14 +26,14 @@ main:
     la   $t0, string
 find_newline:
     lb   $t1, 0($t0)
-    beq  $t1, 10, replace_newline
-    beq  $t1, $zero, len_count_start
+    beq  $t1, 10, newline_to_0
+    beq  $t1, $zero, count_start
     addi $t0, $t0, 1
     j    find_newline
-replace_newline:
+newline_to_0:
     sb   $zero, 0($t0)
 
-len_count_start:
+count_start:
     
     la   $t0, string
     li   $s0, 0         
@@ -134,7 +134,7 @@ fill_left_loop:
 
 
 get_next_char:
-#pega o proximo caracter da string
+#pega o proximo caractere da string
     beq  $s4, 1, return_space
 
     lb   $t2, 0($s2)
@@ -147,7 +147,7 @@ flag_space:
 #condicional para verificar se é um espaço
     li   $s4, 1
 return_space:
-#reotrna que o proximo caracter é um espaço
+#reotrna que o proximo caractere é um espaço
     li   $v0, ' '
     jr   $ra
 
@@ -168,7 +168,7 @@ print_col_loop:
     add  $t2, $t2, $t1
     add  $t2, $s3, $t2
     
-    lb   $a0, 0($t2) #printa se for caracter
+    lb   $a0, 0($t2) #printa se for caractere
     li   $v0, 11
     syscall
 
