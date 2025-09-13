@@ -8,7 +8,7 @@
     # matrizes A, B e C (n x n)
     
     # Pelo tamanho da matriz ser 512 a operacao demora MUITO
-    n: .word 8
+    n: .word 512
     block_size: .word 16 #tamanho do bloco B
     A: .space 1048576 #512 x 512 x 4 bytes
     B: .space 1048576
