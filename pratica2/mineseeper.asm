@@ -319,10 +319,12 @@ celulaComNumero:
     j    fimRevela
 
 acertouMina:
+    # revela a celula
     add  $t3, $s1, $t2
     li   $t4, 1
     sb   $t4, 0($t3)
     li   $v0, 0
+    # finaliza jogo
     li   $v0, -1
     j    fimRevela
 
