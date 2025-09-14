@@ -277,59 +277,61 @@ contaMinas:
 	jr  $ra 			# Retorna para a função principal	
 
 revelaCelula:
-	addi $sp, $sp, -4		
-	sw $ra, 0($sp)
+    addi $sp, $sp, -4
+    sw   $ra, 0($sp)
 
-	move $t0, $v0			# Move as coordenadas para $t0 e $t1
-	move $t1, $v1			
+    move $t0, $v0
+    move $t1, $v1
 
-	la $s0, tabuleiroLogico		# Carrega os endereços base dos tabuleiros
-	la $s1, tabuleiroVisivel	
+    la   $s0, tabuleiroLogico
+    la   $s1, tabuleiroVisivel
 
-	li $t2, 10			# Calcula o índice
-	mult $t0, $t2
-	mflo $t2
-	add $t2, $t2, $t1		# $t2 = índice
+    li   $t2, 10
+    mult $t0, $t2
+    mflo $t2
+    add  $t2, $t2, $t1      # t2 = índice
 
-	add $t3, $s1, $t2		# $t3 = endereço em tabuleiroVisivel
-	lb $t6, 0($t3)
-	bne $t6, 0, jaRevelada
+   
+    add  $t3, $s1, $t2
+    lb   $t6, 0($t3)
+    bne  $t6, 0, jaRevelada
 
-	li $t4, 1			# Marca a célula como revelada (salva 1 no tabuleiro visível)
-	sb $t4, 0($t3)
+    # olha o lógico
+    add  $t3, $s0, $t2
+    lb   $t4, 0($t3)
+    li   $t5, 9
+    beq  $t4, $t5, acertouMina
 
-	add $t3, $s0, $t2		# $t3 = endereço em tabuleiroLogico
-	lb $t4, 0($t3)			# Carrega o conteúdo da célula
+    bne  $t4, $zero, celulaComNumero
 
-	li $t5, 9			# Compara o conteúdo com 9 (mina)
-	beq $t4, $t5, acertouMina
-	
-	bne $t4, 0, celulaComNumero
+    # se == 0, chama inundacao
+    move $a0, $t0
+    move $a1, $t1
+    jal  inundacao
+    j    fimRevela
 
-	move $a0, $t0			# Chamada da inundacao
-	move $a1, $t1
-	jal inundacao
+celulaComNumero:
+    # para valores diferente de 0, revela e retorna
+    add  $t3, $s1, $t2
+    li   $t4, 1
+    sb   $t4, 0($t3)
+    li   $v0, 0
+    j    fimRevela
 
-	j fimRevela
+acertouMina:
+    li   $v0, -1
+    j    fimRevela
 
-  celulaComNumero:
-	li $v0, 0			
-	j fimRevela
+jaRevelada:
+    li   $v0, 0
 
-  acertouMina:
-	li $v0, -1			# Retorna -1 para derrota
-	j fimRevela
-
-  jaRevelada:
-	li $v0, 0			# Se já está revelada, não faz nada
-	j fimRevela
-
-  fimRevela:
-	lw $ra, 0($sp)			# Restaura o endereço de retorno e retorna
-	addi $sp, $sp, 4
-	jr $ra
+fimRevela:
+    lw   $ra, 0($sp)
+    addi $sp, $sp, 4
+    jr   $ra
 
 inundacao:
+	
 	addi $sp, $sp, -20		# Salvar os endereços pois serão modificados
 	sw $ra, 0($sp)
 	sw $s0, 4($sp)
