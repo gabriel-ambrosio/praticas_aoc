@@ -116,6 +116,18 @@ atoi:
 	atualizaAcc:
 		multu $t2, $t3 # multiplica pela pos na string (unidade, dezena, centena, etc), unsigned para intervalo maior
 		mflo $t2 # volta o resultado da mult para t2
+		
+		# se existe valor no hi, passou do intervalo aceito
+		mfhi $t6
+		bgt $t6, $zero, valorInvalido
+		
+		beq $t2, 4000000000, pertoLimite # valida se vai estar no intervalo valido perto do limite
+		addu $v0, $v0, $t2 # acumula em v0 (unsigned para intervalo maior)
+		addi $t1, $t1, 1 # incrementa iterador do loop
+		j carregaProxByte
+		
+	pertoLimite:
+		bge $v0, 294967295, valorInvalido # estoura o maior valor valido
 		addu $v0, $v0, $t2 # acumula em v0 (unsigned para intervalo maior)
 		addi $t1, $t1, 1 # incrementa iterador do loop
 		j carregaProxByte
@@ -142,12 +154,5 @@ atoi:
 		j fimATOI
 	
 	fimATOI:
-		jr $ra
-	
-	
-	
-	
-	
-	
-	
+		jr $ra	
 	
