@@ -3,7 +3,8 @@
 	tabuleiroLogico: .space 100		# Parte lógica do tabuleiro
 	novaLinha: .asciiz "\n"			# Pula a linha
 	barra: .asciiz "  |  "			# Espaço entre os caracteres
-	entrada: .asciiz "\nEnter (x, y):\n"
+	entradaX: .asciiz "\nEnter x:\n"
+	entradaY: .asciiz "\nEnter y:\n"
 	espaco: .asciiz "  "
 	erroInvalido: .asciiz "Entrada inválida! Tente novamente\n\n"
 	msgVitoria: .asciiz "\nParabens, voce venceu!\n"
@@ -106,7 +107,7 @@ showTabuleiro:
     
 getEntrada:				      
         li $v0, 4        	                # Printar String
-        la $a0, entrada
+        la $a0, entradaX
         syscall
     						# Le o primeiro inteiro (linha)
         li $v0, 5          	        
@@ -114,6 +115,10 @@ getEntrada:
 					
         move $t0, $v0        	     	        # Salva a linha em $t0
 
+	li $v0, 4        	                # Printar String
+        la $a0, entradaY
+        syscall
+        
         li $v0, 5               		# Le o segundo inteiro (coluna)  
         syscall                  
    					
